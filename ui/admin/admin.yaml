@@ -1,0 +1,332 @@
+about:
+  date: October 10, 2024 10:24:14
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 12
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Airline:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: code
+      required: true
+    - name: id
+    description: Table to store airline details.
+    info_list: Table to store airline details.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - airline_id
+      name: FlightList
+      resource: Flight
+    type: Airline
+    user_key: name
+  Airport:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: location
+    - name: id
+    description: Table to store airport details.
+    info_list: Table to store airport details.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - destination_airport_id
+      name: FlightList
+      resource: Flight
+    - direction: tomany
+      fks:
+      - source_airport_id
+      name: sourceFlightList
+      resource: Flight
+    type: Airport
+    user_key: name
+  Baggage:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: booking_id
+    - name: weight
+    description: Table to store baggage details.
+    info_list: Table to store baggage details.
+    tab_groups:
+    - direction: toone
+      fks:
+      - booking_id
+      name: booking
+      resource: Booking
+    type: Baggage
+    user_key: id
+  Booking:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: flight_id
+    - name: passenger_id
+    - name: booking_date
+    description: Table to store booking details.
+    info_list: Table to store booking details.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - booking_id
+      name: BaggageList
+      resource: Baggage
+    - direction: toone
+      fks:
+      - flight_id
+      name: flight
+      resource: Flight
+    - direction: toone
+      fks:
+      - passenger_id
+      name: passenger
+      resource: Passenger
+    type: Booking
+    user_key: id
+  CheckIn:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: flight_id
+    - name: passenger_id
+    - name: check_in_time
+    description: Table to store check-in information.
+    info_list: Table to store check-in information.
+    tab_groups:
+    - direction: toone
+      fks:
+      - flight_id
+      name: flight
+      resource: Flight
+    - direction: toone
+      fks:
+      - passenger_id
+      name: passenger
+      resource: Passenger
+    type: CheckIn
+    user_key: id
+  Crew:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: position
+    - name: id
+    description: Table to store crew details.
+    info_list: Table to store crew details.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - crew_id
+      name: FlightCrewList
+      resource: FlightCrew
+    type: Crew
+    user_key: name
+  Delay:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: flight_id
+    - name: delay_duration
+    - name: reason
+    description: Table to store flight delay information.
+    info_list: Table to store flight delay information.
+    tab_groups:
+    - direction: toone
+      fks:
+      - flight_id
+      name: flight
+      resource: Flight
+    type: Delay
+    user_key: id
+  Flight:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: airline_id
+    - name: destination_airport_id
+    - name: source_airport_id
+    - name: number
+      required: true
+    - name: departure_time
+    - name: arrival_time
+    description: Table to store flight details.
+    info_list: Table to store flight details.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - flight_id
+      name: BookingList
+      resource: Booking
+    - direction: tomany
+      fks:
+      - flight_id
+      name: CheckInList
+      resource: CheckIn
+    - direction: tomany
+      fks:
+      - flight_id
+      name: DelayList
+      resource: Delay
+    - direction: tomany
+      fks:
+      - flight_id
+      name: FlightCrewList
+      resource: FlightCrew
+    - direction: tomany
+      fks:
+      - flight_id
+      name: MaintenanceList
+      resource: Maintenance
+    - direction: toone
+      fks:
+      - airline_id
+      name: airline
+      resource: Airline
+    - direction: toone
+      fks:
+      - destination_airport_id
+      name: destination_airport
+      resource: Airport
+    - direction: toone
+      fks:
+      - source_airport_id
+      name: source_airport
+      resource: Airport
+    type: Flight
+    user_key: id
+  FlightCrew:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: crew_id
+    - name: flight_id
+    description: Table to store flight crew assignments.
+    info_list: Table to store flight crew assignments.
+    tab_groups:
+    - direction: toone
+      fks:
+      - crew_id
+      name: crew
+      resource: Crew
+    - direction: toone
+      fks:
+      - flight_id
+      name: flight
+      resource: Flight
+    type: FlightCrew
+    user_key: id
+  Gate:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: gate_number
+      required: true
+    - name: terminal
+    description: Table to store gate details.
+    info_list: Table to store gate details.
+    type: Gate
+    user_key: id
+  Maintenance:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: flight_id
+    - name: date
+      required: true
+    - name: id
+    description: Table to store maintenance records.
+    info_list: Table to store maintenance records.
+    tab_groups:
+    - direction: toone
+      fks:
+      - flight_id
+      name: flight
+      resource: Flight
+    type: Maintenance
+    user_key: description
+  Passenger:
+    attributes:
+    - label: ' full_name*'
+      name: full_name
+      required: true
+      search: true
+      sort: true
+    - name: passport_number
+    - name: id
+    description: Table to store passenger details.
+    info_list: Table to store passenger details.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - passenger_id
+      name: BookingList
+      resource: Booking
+    - direction: tomany
+      fks:
+      - passenger_id
+      name: CheckInList
+      resource: CheckIn
+    type: Passenger
+    user_key: full_name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

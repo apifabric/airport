@@ -1,0 +1,98 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+
+Table Airline {
+    id INTEGER
+    name VARCHAR
+    code VARCHAR
+    }
+
+Table Airport {
+    id INTEGER
+    name VARCHAR
+    location VARCHAR
+    }
+
+Table Baggage {
+    id INTEGER
+    booking_id INTEGER
+    weight FLOAT
+    }
+
+Table Booking {
+    id INTEGER
+    flight_id INTEGER
+    passenger_id INTEGER
+    booking_date DATETIME
+    }
+
+Table Flight {
+    id INTEGER
+    number VARCHAR
+    airline_id INTEGER
+    source_airport_id INTEGER
+    destination_airport_id INTEGER
+    departure_time DATETIME
+    arrival_time DATETIME
+    }
+
+Table Passenger {
+    id INTEGER
+    full_name VARCHAR
+    passport_number VARCHAR
+    }
+
+Table CheckIn {
+    id INTEGER
+    passenger_id INTEGER
+    flight_id INTEGER
+    check_in_time DATETIME
+    }
+
+Table Crew {
+    id INTEGER
+    name VARCHAR
+    position VARCHAR
+    }
+
+Table Delay {
+    id INTEGER
+    flight_id INTEGER
+    delay_duration INTEGER
+    reason VARCHAR
+    }
+
+Table FlightCrew {
+    id INTEGER
+    flight_id INTEGER
+    crew_id INTEGER
+    }
+
+Table Gate {
+    id INTEGER
+    gate_number VARCHAR
+    terminal VARCHAR
+    }
+
+Table Maintenance {
+    id INTEGER
+    flight_id INTEGER
+    date DATETIME
+    description VARCHAR
+    }
+
+
+
+// Relationships
+    Ref: Baggage.(booking_id) < Booking.(id)
+    Ref: Booking.(flight_id) < Flight.(id)
+    Ref: Booking.(passenger_id) < Passenger.(id)
+    Ref: Flight.(airline_id) < Airline.(id)
+    Ref: Flight.(destination_airport_id) < Airport.(id)
+    Ref: Flight.(source_airport_id) < Airport.(id)
+    Ref: CheckIn.(flight_id) < Flight.(id)
+    Ref: CheckIn.(passenger_id) < Passenger.(id)
+    Ref: Delay.(flight_id) < Flight.(id)
+    Ref: FlightCrew.(crew_id) < Crew.(id)
+    Ref: FlightCrew.(flight_id) < Flight.(id)
+    Ref: Maintenance.(flight_id) < Flight.(id)

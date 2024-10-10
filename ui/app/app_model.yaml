@@ -1,0 +1,498 @@
+about:
+  date: October 10, 2024 10:24:14
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Airline:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: code
+      required: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table to store airline details.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Table to store airline details.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - airline_id
+      name: FlightList
+      resource: Flight
+    type: Airline
+  Airport:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: location
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table to store airport details.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Table to store airport details.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - destination_airport_id
+      name: FlightList
+      resource: Flight
+    - direction: tomany
+      fks:
+      - source_airport_id
+      name: sourceFlightList
+      resource: Flight
+    type: Airport
+  Baggage:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: booking_id
+      template: integer
+      type: INTEGER
+    - name: weight
+      template: real
+      type: FLOAT
+    description: Table to store baggage details.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Table to store baggage details.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - booking_id
+      name: booking
+      resource: Booking
+    type: Baggage
+  Booking:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: flight_id
+      template: integer
+      type: INTEGER
+    - name: passenger_id
+      template: integer
+      type: INTEGER
+    - name: booking_date
+      template: date
+      type: DATETIME
+    description: Table to store booking details.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Table to store booking details.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - booking_id
+      name: BaggageList
+      resource: Baggage
+    - direction: toone
+      fks:
+      - flight_id
+      name: flight
+      resource: Flight
+    - direction: toone
+      fks:
+      - passenger_id
+      name: passenger
+      resource: Passenger
+    type: Booking
+  CheckIn:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: flight_id
+      template: integer
+      type: INTEGER
+    - name: passenger_id
+      template: integer
+      type: INTEGER
+    - name: check_in_time
+      template: date
+      type: DATETIME
+    description: Table to store check-in information.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Table to store check-in information.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - flight_id
+      name: flight
+      resource: Flight
+    - direction: toone
+      fks:
+      - passenger_id
+      name: passenger
+      resource: Passenger
+    type: CheckIn
+  Crew:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: position
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table to store crew details.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Table to store crew details.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - crew_id
+      name: FlightCrewList
+      resource: FlightCrew
+    type: Crew
+  Delay:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: flight_id
+      template: integer
+      type: INTEGER
+    - name: delay_duration
+      template: integer
+      type: INTEGER
+    - name: reason
+      template: text
+      type: VARCHAR
+    description: Table to store flight delay information.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Table to store flight delay information.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - flight_id
+      name: flight
+      resource: Flight
+    type: Delay
+  Flight:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: airline_id
+      template: integer
+      type: INTEGER
+    - name: destination_airport_id
+      template: integer
+      type: INTEGER
+    - name: source_airport_id
+      template: integer
+      type: INTEGER
+    - name: number
+      required: true
+      template: text
+      type: VARCHAR
+    - name: departure_time
+      template: date
+      type: DATETIME
+    - name: arrival_time
+      template: date
+      type: DATETIME
+    description: Table to store flight details.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Table to store flight details.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - flight_id
+      name: BookingList
+      resource: Booking
+    - direction: tomany
+      fks:
+      - flight_id
+      name: CheckInList
+      resource: CheckIn
+    - direction: tomany
+      fks:
+      - flight_id
+      name: DelayList
+      resource: Delay
+    - direction: tomany
+      fks:
+      - flight_id
+      name: FlightCrewList
+      resource: FlightCrew
+    - direction: tomany
+      fks:
+      - flight_id
+      name: MaintenanceList
+      resource: Maintenance
+    - direction: toone
+      fks:
+      - airline_id
+      name: airline
+      resource: Airline
+    - direction: toone
+      fks:
+      - destination_airport_id
+      name: destination_airport
+      resource: Airport
+    - direction: toone
+      fks:
+      - source_airport_id
+      name: source_airport
+      resource: Airport
+    type: Flight
+  FlightCrew:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: crew_id
+      template: integer
+      type: INTEGER
+    - name: flight_id
+      template: integer
+      type: INTEGER
+    description: Table to store flight crew assignments.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Table to store flight crew assignments.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - crew_id
+      name: crew
+      resource: Crew
+    - direction: toone
+      fks:
+      - flight_id
+      name: flight
+      resource: Flight
+    type: FlightCrew
+  Gate:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: gate_number
+      required: true
+      template: text
+      type: VARCHAR
+    - name: terminal
+      template: text
+      type: VARCHAR
+    description: Table to store gate details.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Table to store gate details.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    type: Gate
+  Maintenance:
+    columns:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: flight_id
+      template: integer
+      type: INTEGER
+    - name: date
+      required: true
+      template: date
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table to store maintenance records.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Table to store maintenance records.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - flight_id
+      name: flight
+      resource: Flight
+    type: Maintenance
+  Passenger:
+    columns:
+    - label: ' full_name*'
+      name: full_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: passport_number
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Table to store passenger details.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: full_name
+    home_template: home_template.html
+    info_list: Table to store passenger details.
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - passenger_id
+      name: BookingList
+      resource: Booking
+    - direction: tomany
+      fks:
+      - passenger_id
+      name: CheckInList
+      resource: CheckIn
+    type: Passenger
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false
